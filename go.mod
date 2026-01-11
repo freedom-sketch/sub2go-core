@@ -1,6 +1,6 @@
-module github.com/sub2freedom/xray-manager
+module github.com/freedom-sketch/sub2go-core
 
-go 1.25.4
+go 1.25.5
 
 require (
 	github.com/sirupsen/logrus v1.9.3

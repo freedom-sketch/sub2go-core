@@ -1,10 +1,9 @@
-// database/database.go
 package database
 
 import (
 	"fmt"
 
-	"github.com/sub2freedom/xray-manager/config"
+	"github.com/freedom-sketch/sub2go-core/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

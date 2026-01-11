@@ -4,8 +4,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/freedom-sketch/sub2go-core/internal/config"
 	log "github.com/sirupsen/logrus"
-	"github.com/sub2freedom/xray-manager/config"
 )
 
 var Log *log.Logger

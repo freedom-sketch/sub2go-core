@@ -1,0 +1,35 @@
+{
+    "tag": "{{ .Tag }}",
+    "listen": "0.0.0.0",
+    "port": {{ .Port }},
+    "protocol": "vless",
+    "settings": {
+        "clients": [],
+        "decryption": "none"
+    },
+    "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+            "path": "/"
+        },
+        "security": "reality",
+        "realitySettings": {
+            "show": false,
+            "target": "{{ .Target }}",
+            "serverNames": {{ .ServerNamesJSON }},
+            "privateKey": "{{ .PrivateKey }}",
+            "minClientVer": "",
+            "maxClientVer": "",
+            "maxTimeDiff": 0,
+            "shortIds": {{ .ShortIdsJSON }}
+        }
+    },
+    "sniffing": {
+        "enabled": true,
+        "destOverride": [
+            "http",
+            "tls",
+            "quic"
+        ]
+    }
+}

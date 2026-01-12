@@ -1,32 +1,31 @@
-package happ
+package linkutils
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"io"
 	"net/http"
 )
 
-var encryptionURL = "https://crypto.happ.su/api.php"
-
 // Structure for sending a request to the Happ API (string to encrypt)
-type Request struct {
+type HappEncryptRequest struct {
 	URL string `json:"url"`
 }
 
 // Structure for receiving a response from the Happ API (encrypted string)
-type Response struct {
+type HappEncryptResponse struct {
 	EncryptedLink string `json:"encrypted_link"`
 }
 
 // Encrypts a string using RSA-4096
 func Encrypt(plaintext string) (string, error) {
-	reqBody, err := json.Marshal(Request{URL: plaintext})
+	reqBody, err := json.Marshal(HappEncryptRequest{URL: plaintext})
 	if err != nil {
 		return "", err
 	}
 
-	resp, err := http.Post(encryptionURL, "application/json", bytes.NewBuffer(reqBody))
+	resp, err := http.Post("https://crypto.happ.su/api.php", "application/json", bytes.NewBuffer(reqBody))
 	if err != nil {
 		return "", err
 	}
@@ -37,10 +36,16 @@ func Encrypt(plaintext string) (string, error) {
 		return "", err
 	}
 
-	var apiResponse Response
+	var apiResponse HappEncryptResponse
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return "", err
 	}
 
 	return apiResponse.EncryptedLink, nil
+}
+
+// Returns a base64 encoded string with the "base64" prefix
+func Base64Encode(plaintext string) string {
+	encoded := base64.StdEncoding.EncodeToString([]byte(plaintext))
+	return "base64:" + encoded
 }

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/freedom-sketch/sub2go/internal/database/models"
+	"github.com/freedom-sketch/sub2go-core/internal/database/models"
 )
 
 func TestConfigInboundVlessRealityXHTTP(t *testing.T) {

@@ -9,6 +9,16 @@ import (
 
 var encryptionURL = "https://crypto.happ.su/api.php"
 
+// Structure for sending a request to the Happ API (string to encrypt)
+type Request struct {
+	URL string `json:"url"`
+}
+
+// Structure for receiving a response from the Happ API (encrypted string)
+type Response struct {
+	EncryptedLink string `json:"encrypted_link"`
+}
+
 // Encrypts a string using RSA-4096
 func Encrypt(plaintext string) (string, error) {
 	reqBody, err := json.Marshal(Request{URL: plaintext})

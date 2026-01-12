@@ -8,23 +8,28 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var Log *log.Logger
-var logFile *os.File
+type Logger struct {
+	*log.Logger
+	file *os.File
+}
 
-func Init(cfg *config.Logging) error {
+func (l *Logger) Close() error {
+	return l.file.Close()
+}
+
+func NewLogger(cfg *config.Logging) (*Logger, error) {
 	if err := os.MkdirAll("logs", 0755); err != nil {
-		return err
+		return nil, err
 	}
 
-	f, err := os.OpenFile("logs/"+cfg.FileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	f, err := os.OpenFile(cfg.Path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	logFile = f
 
-	Log = log.New()
+	l := log.New()
 
-	Log.SetFormatter(&log.JSONFormatter{
+	l.SetFormatter(&log.JSONFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 		PrettyPrint:     false,
 	})
@@ -33,18 +38,11 @@ func Init(cfg *config.Logging) error {
 	if err != nil {
 		lvl = log.InfoLevel
 	}
-	Log.SetLevel(lvl)
-	Log.SetOutput(io.MultiWriter(os.Stdout, logFile))
+	l.SetLevel(lvl)
+	l.SetOutput(io.MultiWriter(os.Stdout, f))
 
-	return nil
-}
-
-func Close() error {
-	if logFile == nil {
-		return nil
-	}
-	err := logFile.Close()
-	logFile = nil
-
-	return err
+	return &Logger{
+		Logger: l,
+		file:   f,
+	}, nil
 }

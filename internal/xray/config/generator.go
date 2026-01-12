@@ -13,6 +13,15 @@ import (
 //go:embed templates/*.tmpl
 var templates embed.FS
 
+type InboundTemplateData struct {
+	Tag             string
+	Port            int
+	Target          string
+	PrivateKey      string
+	ServerNamesJSON string
+	ShortIdsJSON    string
+}
+
 func prepareInboundTemplate(inbound *models.Inbound) (InboundTemplateData, error) {
 	var serverNames []string
 	err := json.Unmarshal([]byte(inbound.SNI), &serverNames)

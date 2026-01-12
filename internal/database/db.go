@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/freedom-sketch/sub2go-core/internal/config"
+	"github.com/freedom-sketch/sub2go-core/internal/database/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -28,4 +29,14 @@ func Connect(cfg *config.DataBase) (*gorm.DB, error) {
 	}
 
 	return db, nil
+}
+
+func AutoMigrate(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&models.User{},
+		&models.Admin{},
+		&models.Subscription{},
+		&models.Server{},
+		&models.Inbound{},
+	)
 }

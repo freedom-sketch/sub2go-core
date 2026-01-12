@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"text/template"
 
-	"github.com/freedom-sketch/sub2go-core/internal/database/models"
+	"github.com/freedom-sketch/sub2go-core/infra/database/models"
 )
 
 //go:embed templates/*.tmpl

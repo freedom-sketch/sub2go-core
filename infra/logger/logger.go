@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/freedom-sketch/sub2go-core/internal/config"
+	"github.com/freedom-sketch/sub2go-core/infra/config"
 	log "github.com/sirupsen/logrus"
 )
 

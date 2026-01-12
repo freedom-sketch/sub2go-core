@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 
-	"github.com/freedom-sketch/sub2go-core/internal/config"
-	"github.com/freedom-sketch/sub2go-core/internal/database/models"
+	"github.com/freedom-sketch/sub2go-core/infra/config"
+	"github.com/freedom-sketch/sub2go-core/infra/database/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

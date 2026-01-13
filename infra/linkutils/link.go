@@ -6,21 +6,13 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+
+	"github.com/freedom-sketch/sub2go-core/dto"
 )
-
-// Structure for sending a request to the Happ API (string to encrypt)
-type HappEncryptRequest struct {
-	URL string `json:"url"`
-}
-
-// Structure for receiving a response from the Happ API (encrypted string)
-type HappEncryptResponse struct {
-	EncryptedLink string `json:"encrypted_link"`
-}
 
 // Encrypts a string using RSA-4096
 func Encrypt(plaintext string) (string, error) {
-	reqBody, err := json.Marshal(HappEncryptRequest{URL: plaintext})
+	reqBody, err := json.Marshal(dto.HappEncryptRequest{URL: plaintext})
 	if err != nil {
 		return "", err
 	}
@@ -36,7 +28,7 @@ func Encrypt(plaintext string) (string, error) {
 		return "", err
 	}
 
-	var apiResponse HappEncryptResponse
+	var apiResponse dto.HappEncryptResponse
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return "", err
 	}

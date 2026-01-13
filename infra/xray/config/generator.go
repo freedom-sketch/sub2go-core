@@ -22,7 +22,7 @@ type InboundTemplateData struct {
 	ShortIdsJSON    string
 }
 
-func prepareInboundTemplate(inbound *models.Inbound) (InboundTemplateData, error) {
+func prepareInboundData(inbound *models.Inbound) (InboundTemplateData, error) {
 	var serverNames []string
 	err := json.Unmarshal([]byte(inbound.SNI), &serverNames)
 	if err != nil {
@@ -61,7 +61,7 @@ func GenerateInbounConfig(inbound *models.Inbound) ([]byte, error) {
 		return nil, err
 	}
 
-	data, err := prepareInboundTemplate(inbound)
+	data, err := prepareInboundData(inbound)
 	if err != nil {
 		return nil, err
 	}

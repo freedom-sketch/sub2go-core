@@ -1,35 +1,36 @@
 {
-    "tag": "{{ .Tag }}",
-    "listen": "0.0.0.0",
-    "port": {{ .Port }},
-    "protocol": "vless",
-    "settings": {
+  "inbounds": [
+    {
+      "tag": "{{ .Tag }}",
+      "listen": "0.0.0.0",
+      "port": {{ .Port }},
+      "protocol": "vless",
+      "settings": {
         "clients": [],
         "decryption": "none"
-    },
-    "streamSettings": {
+      },
+      "streamSettings": {
         "network": "tcp",
         "security": "reality",
         "realitySettings": {
-            "show": false,
-            "dest": "{{ .Target }}",
-            "xver": 0,
-            "serverNames": {{ .ServerNamesJSON }},
-            "privateKey": "{{ .PrivateKey }}",
-            "minClientVer": "",
-            "maxClientVer": "",
-            "maxTimeDiff": 0,
-            "shortIds": {{ .ShortIdsJSON }}
-        },
-        "tcpSettings": {
-            "alpn": ["http/1.1"]
+          "show": false,
+          "dest": "{{ .Target }}",
+          "xver": 0,
+          "serverNames": {{ .ServerNamesJSON }},
+          "privateKey": "{{ .PrivateKey }}",
+          "minClientVer": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "shortIds": {{ .ShortIdsJSON }}
         }
-    },
-    "sniffing": {
+      },
+      "sniffing": {
         "enabled": true,
         "destOverride": [
-            "http",
-            "tls"
+          "http",
+          "tls"
         ]
+      }
     }
+  ]
 }

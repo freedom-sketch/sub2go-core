@@ -77,6 +77,7 @@ func (x *XrayAPI) AddInbound(inbound []byte) error {
 	return err
 }
 
+// AddUser adds a user to an inbound in the Xray core
 func (x *XrayAPI) AddUser(inboundTag string, user *VlessUser) error {
 	var account *serial.TypedMessage
 	account = serial.ToTypedMessage(&vless.Account{
@@ -97,6 +98,7 @@ func (x *XrayAPI) AddUser(inboundTag string, user *VlessUser) error {
 	return err
 }
 
+// RemoveUser removes a user from an inbound in the Xray core by email
 func (x *XrayAPI) RemoveUser(inboundTag, email string) error {
 	op := &command.RemoveUserOperation{Email: email}
 	req := &command.AlterInboundRequest{

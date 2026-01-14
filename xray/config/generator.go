@@ -7,29 +7,37 @@ import (
 	"fmt"
 	"text/template"
 
-	"github.com/freedom-sketch/sub2go-core/dto"
 	"github.com/freedom-sketch/sub2go-core/infra/database/models"
 )
 
 //go:embed templates/*.tmpl
 var templates embed.FS
 
-func prepareInboundData(inbound *models.Inbound) (dto.InboundTemplateData, error) {
+type InboundTemplateData struct {
+	Tag             string
+	Port            int
+	Target          string
+	PrivateKey      string
+	ServerNamesJSON string
+	ShortIdsJSON    string
+}
+
+func prepareInboundData(inbound *models.Inbound) (InboundTemplateData, error) {
 	var serverNames []string
 	err := json.Unmarshal([]byte(inbound.SNI), &serverNames)
 	if err != nil {
-		return dto.InboundTemplateData{}, err
+		return InboundTemplateData{}, err
 	}
 	serverNamesJSON, _ := json.Marshal(serverNames)
 
 	var shortIds []string
 	err = json.Unmarshal([]byte(inbound.ShortIds), &shortIds)
 	if err != nil {
-		return dto.InboundTemplateData{}, err
+		return InboundTemplateData{}, err
 	}
 	shortIdsJSON, _ := json.Marshal(shortIds)
 
-	return dto.InboundTemplateData{
+	return InboundTemplateData{
 		Tag:             inbound.Tag,
 		Port:            inbound.Port,
 		Target:          inbound.Target,

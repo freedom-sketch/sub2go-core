@@ -6,13 +6,11 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-
-	"github.com/freedom-sketch/sub2go-core/dto"
 )
 
 // Encrypts a string using RSA-4096
 func Encrypt(plaintext string) (string, error) {
-	reqBody, err := json.Marshal(dto.HappEncryptRequest{URL: plaintext})
+	reqBody, err := json.Marshal(HappEncryptRequest{URL: plaintext})
 	if err != nil {
 		return "", err
 	}
@@ -28,7 +26,7 @@ func Encrypt(plaintext string) (string, error) {
 		return "", err
 	}
 
-	var apiResponse dto.HappEncryptResponse
+	var apiResponse HappEncryptResponse
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return "", err
 	}

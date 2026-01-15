@@ -32,11 +32,16 @@ type DataBase struct {
 	Name     string `json:"name"`
 }
 
+type TelegramBot struct {
+	Token string `json:"token"`
+}
+
 type Config struct {
 	API          API          `json:"api"`
 	Subscription Subscription `json:"subscription"`
 	Logging      Logging      `json:"logging"`
 	DataBase     DataBase     `json:"data-base"`
+	TelegramBot  TelegramBot  `json:"telegram-bot"`
 }
 
 // Loads data from the configuration into a structure and returns a pointer to it

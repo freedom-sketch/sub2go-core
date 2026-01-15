@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"time"
+
+	"regexp"
 
 	"github.com/xtls/xray-core/app/proxyman/command"
 	statsService "github.com/xtls/xray-core/app/stats/command"
@@ -15,20 +18,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
-
-// XrayAPI is a gRPC client for managing Xray core configuration, inbounds, outbounds, and statistics
-type XrayAPI struct {
-	HandlerServiceClient *command.HandlerServiceClient
-	StatsServiceClient   *statsService.StatsServiceClient
-	grpcClient           *grpc.ClientConn
-	isConnected          bool
-}
-
-type VlessUser struct {
-	ID    string
-	Email string
-	Flow  string
-}
 
 // Init connects to the Xray API server and initializes handler and stats service clients
 func (x *XrayAPI) Init(apiPort int) error {
@@ -107,4 +96,98 @@ func (x *XrayAPI) RemoveUser(inboundTag, email string) error {
 	}
 	_, err := (*x.HandlerServiceClient).AlterInbound(context.Background(), req)
 	return err
+}
+
+// GetTraffic queries traffic statistics from the Xray core, optionally resetting counters.
+func (x *XrayAPI) GetTraffic(reset bool) ([]*Traffic, []*ClientTraffic, error) {
+	if !x.isConnected {
+		return nil, nil, fmt.Errorf("xray api not connected")
+	}
+
+	if x.StatsServiceClient == nil {
+		return nil, nil, fmt.Errorf("stats service client not initialized")
+	}
+
+	trafficRegex := regexp.MustCompile(`(inbound|outbound)>>>([^>]+)>>>traffic>>>(downlink|uplink)`)
+	clientTrafficRegex := regexp.MustCompile(`user>>>([^>]+)>>>traffic>>>(downlink|uplink)`)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	resp, err := (*x.StatsServiceClient).QueryStats(ctx, &statsService.QueryStatsRequest{Reset_: reset})
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to query stats: %w", err)
+	}
+
+	tagTrafficMap := make(map[string]*Traffic)
+	emailTrafficMap := make(map[string]*ClientTraffic)
+
+	for _, stat := range resp.GetStat() {
+		name := stat.Name
+		value := stat.Value
+
+		if matches := trafficRegex.FindStringSubmatch(name); len(matches) == 4 {
+			processTraffic(matches, value, tagTrafficMap)
+		}
+
+		if matches := clientTrafficRegex.FindStringSubmatch(name); len(matches) == 3 {
+			processClientTraffic(matches, value, emailTrafficMap)
+		}
+	}
+
+	return mapToSlice(tagTrafficMap), mapToSlice(emailTrafficMap), nil
+}
+
+// processTraffic aggregates a traffic stat into trafficMap using regex matches and value.
+func processTraffic(matches []string, value int64, trafficMap map[string]*Traffic) {
+	isInbound := matches[1] == "inbound"
+	tag := matches[2]
+	isDown := matches[3] == "downlink"
+
+	if tag == "api" {
+		return
+	}
+
+	traffic, ok := trafficMap[tag]
+	if !ok {
+		traffic = &Traffic{
+			IsInbound:  isInbound,
+			IsOutbound: !isInbound,
+			Tag:        tag,
+		}
+		trafficMap[tag] = traffic
+	}
+
+	if isDown {
+		traffic.Down = value
+	} else {
+		traffic.Up = value
+	}
+}
+
+// processClientTraffic updates clientTrafficMap with upload/download values for a client email.
+func processClientTraffic(matches []string, value int64, clientTrafficMap map[string]*ClientTraffic) {
+	email := matches[1]
+	isDown := matches[2] == "downlink"
+
+	traffic, ok := clientTrafficMap[email]
+	if !ok {
+		traffic = &ClientTraffic{Email: email}
+		clientTrafficMap[email] = traffic
+	}
+
+	if isDown {
+		traffic.Down = value
+	} else {
+		traffic.Up = value
+	}
+}
+
+// mapToSlice converts a map of pointers to a slice of pointers.
+func mapToSlice[T any](m map[string]*T) []*T {
+	result := make([]*T, 0, len(m))
+	for _, v := range m {
+		result = append(result, v)
+	}
+	return result
 }

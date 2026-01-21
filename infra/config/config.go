@@ -20,7 +20,7 @@ type Logging struct {
 	Level           string `json:"level"`
 	SubscriptionAPI string `json:"subscription-api"`
 	AgentsAPI       string `json:"agents-api"`
-	DataBase        string `json:"data-base"`
+	DataBase        string `json:"database"`
 	TelegramBot     string `json:"telegram-bot"`
 }
 
@@ -39,7 +39,7 @@ type TelegramBot struct {
 type Config struct {
 	API         API         `json:"api"`
 	Logging     Logging     `json:"logging"`
-	DataBase    DataBase    `json:"data-base"`
+	DataBase    DataBase    `json:"database"`
 	TelegramBot TelegramBot `json:"telegram-bot"`
 }
 

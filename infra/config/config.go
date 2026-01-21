@@ -5,7 +5,9 @@ import (
 	"os"
 )
 
-type Subscription struct {
+type API struct {
+	Host                  string `json:"host"`
+	WebPath               string `json:"web_path"`
 	ProfileUpdateInterval int    `json:"profile-update-interval"`
 	ProfileTitle          string `json:"profile-title"`
 	SupportURL            string `json:"support-url"`
@@ -14,14 +16,12 @@ type Subscription struct {
 	AnnounceURL           string `json:"announce-url"`
 }
 
-type API struct {
-	Host    string `json:"host"`
-	WebPath string `json:"web_path"`
-}
-
 type Logging struct {
-	Level string `json:"level"`
-	Path  string `json:"path"`
+	Level           string `json:"level"`
+	SubscriptionAPI string `json:"subscription-api"`
+	AgentsAPI       string `json:"agents-api"`
+	DataBase        string `json:"data-base"`
+	TelegramBot     string `json:"telegram-bot"`
 }
 
 type DataBase struct {
@@ -37,11 +37,10 @@ type TelegramBot struct {
 }
 
 type Config struct {
-	API          API          `json:"api"`
-	Subscription Subscription `json:"subscription"`
-	Logging      Logging      `json:"logging"`
-	DataBase     DataBase     `json:"data-base"`
-	TelegramBot  TelegramBot  `json:"telegram-bot"`
+	API         API         `json:"api"`
+	Logging     Logging     `json:"logging"`
+	DataBase    DataBase    `json:"data-base"`
+	TelegramBot TelegramBot `json:"telegram-bot"`
 }
 
 // Loads data from the configuration into a structure and returns a pointer to it

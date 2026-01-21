@@ -3,7 +3,7 @@ package models
 import "time"
 
 type User struct {
-	UUID       string    `gorm:"type:uuid;primarykey;default:uuid_generate_v4()"`
+	UUID       string    `gorm:"type:uuid;primarykey"`
 	TelegramID *int64    `gorm:"column:tg_id;uniqueIndex"`
 	IsActive   bool      `gorm:"default:true;index"`
 	CreatedAt  time.Time `gorm:"autoCreateTime"`

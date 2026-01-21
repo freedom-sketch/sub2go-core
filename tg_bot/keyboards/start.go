@@ -4,19 +4,33 @@ import (
 	"log"
 
 	"github.com/freedom-sketch/sub2go-core/infra/config"
+	"github.com/freedom-sketch/sub2go-core/infra/database"
 	"github.com/go-telegram/bot/models"
+	"github.com/google/uuid"
 )
 
-func StartKeyboard() *models.InlineKeyboardMarkup {
+func StartKeyboard(UserUUID uuid.UUID) *models.InlineKeyboardMarkup {
 	cfg, err := config.Load("config.json")
 	if err != nil {
 		log.Panicf("Failed to load config: %v", err)
 	}
 
+	db, err := database.Connect(&cfg.DataBase)
+	if err != nil {
+		log.Panicf("Failed to connect to database: %v", err)
+	}
+
 	var keyboard [][]models.InlineKeyboardButton
 
-	keyboard = append(keyboard, []models.InlineKeyboardButton{
-		{Text: "🔑 Ключ", CallbackData: "key"}})
+	activeSub, err := database.HasActiveSubscription(db, UserUUID)
+	if err != nil {
+		log.Panicf("Failed to check active subscription: %v", err)
+	}
+
+	if activeSub {
+		keyboard = append(keyboard, []models.InlineKeyboardButton{
+			{Text: "🔑 Мой ключ", CallbackData: "key"}})
+	}
 
 	keyboard = append(keyboard, []models.InlineKeyboardButton{
 		{Text: "ℹ️ Канал", URL: cfg.TelegramBot.Channel},

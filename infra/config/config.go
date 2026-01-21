@@ -7,7 +7,7 @@ import (
 
 type API struct {
 	Host                  string `json:"host"`
-	WebPath               string `json:"web_path"`
+	WebPath               string `json:"web-path"`
 	ProfileUpdateInterval int    `json:"profile-update-interval"`
 	ProfileTitle          string `json:"profile-title"`
 	SupportURL            string `json:"support-url"`

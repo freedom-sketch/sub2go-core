@@ -33,7 +33,9 @@ type DataBase struct {
 }
 
 type TelegramBot struct {
-	Token string `json:"token"`
+	Token   string `json:"token"`
+	Channel string `json:"channel"`
+	Support string `json:"support"`
 }
 
 type Config struct {

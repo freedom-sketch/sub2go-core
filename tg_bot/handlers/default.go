@@ -10,6 +10,9 @@ import (
 )
 
 func DefaultHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
+	if update.Message == nil {
+		return
+	}
 	_, _ = b.SendMessage(ctx, &bot.SendMessageParams{
 		ChatID: update.Message.Chat.ID,
 		Text:   fmt.Sprintf("%s! Используй /start", utils.Greeting()),

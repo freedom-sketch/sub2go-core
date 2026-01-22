@@ -11,7 +11,7 @@ type Subscription struct {
 	StartDate    time.Time `gorm:"not null;index"`
 	EndDate      time.Time `gorm:"not null;index"`
 	IsActive     bool      `gorm:"default:true;index"`
-	CreatedAt    time.Time `gorm:"autoCreateTime"`
+	CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime"`
 
 	User User `gorm:"foreignKey:UserUUID"`

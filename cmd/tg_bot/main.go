@@ -38,6 +38,7 @@ func main() {
 	}
 
 	b.RegisterHandler(bot.HandlerTypeMessageText, "/start", bot.MatchTypePrefix, hdls.StartHandler)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "key", bot.MatchTypeExact, hdls.HandleKey)
 
 	b.Start(ctx)
 }

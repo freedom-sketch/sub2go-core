@@ -6,6 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
+// CreateSubscription creates a new subscription in the database
+func CreateSubscription(db *gorm.DB, subscription *models.Subscription) error {
+	return db.Create(subscription).Error
+}
+
 // HasActiveSubscription checks if the user with the given UUID has an active subscription
 func HasActiveSubscription(db *gorm.DB, userUUID uuid.UUID) (bool, error) {
 	var count int64

@@ -11,7 +11,7 @@ import (
 
 func Connect(cfg *config.DataBase) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
-		"postgresql://%s:%s@%s:%d/%s?sslmode=require",
+		"postgresql://%s:%s@%s:%d/%s?sslmode=disable&connect_timeout=10",
 		cfg.User,
 		cfg.Password,
 		cfg.Host,

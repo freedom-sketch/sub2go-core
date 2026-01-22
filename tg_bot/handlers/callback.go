@@ -13,7 +13,7 @@ import (
 	"github.com/go-telegram/bot/models"
 )
 
-func HandleCallbackKey(ctx context.Context, b *bot.Bot, update *models.Update) {
+func HandleKey(ctx context.Context, b *bot.Bot, update *models.Update) {
 	query := update.CallbackQuery
 	if query == nil {
 		return

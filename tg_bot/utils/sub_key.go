@@ -14,5 +14,5 @@ func GenerateSubscriptionKey(UserUUID uuid.UUID) string {
 		log.Panicf("Failed to load config: %v", err)
 	}
 
-	return fmt.Sprintf("https://%s/%s/%s", cfg.API.Host, cfg.API.WebPath, UserUUID.String())
+	return fmt.Sprintf("https://%s/%s/%s", cfg.App.Host, cfg.App.WebPath, UserUUID.String())
 }

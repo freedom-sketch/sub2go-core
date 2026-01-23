@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-type API struct {
+type App struct {
 	Host                  string `json:"host"`
 	WebPath               string `json:"web-path"`
 	ProfileUpdateInterval int    `json:"profile-update-interval"`
@@ -14,6 +14,10 @@ type API struct {
 	ProfileWebPageUrl     string `json:"profile-web-page-url"`
 	Announce              string `json:"announce"`
 	AnnounceURL           string `json:"announce-url"`
+}
+
+type XrayAPI struct {
+	Port int `json:"port"`
 }
 
 type Logging struct {
@@ -39,7 +43,8 @@ type TelegramBot struct {
 }
 
 type Config struct {
-	API         API         `json:"api"`
+	App         App         `json:"app"`
+	XrayAPI     XrayAPI     `json:"xray-api"`
 	Logging     Logging     `json:"logging"`
 	DataBase    DataBase    `json:"database"`
 	TelegramBot TelegramBot `json:"telegram-bot"`

@@ -13,7 +13,7 @@ import (
 	"github.com/go-telegram/bot/models"
 )
 
-func HandleKey(ctx context.Context, b *bot.Bot, update *models.Update) {
+func Key(ctx context.Context, b *bot.Bot, update *models.Update) {
 	query := update.CallbackQuery
 	if query == nil {
 		return
@@ -38,15 +38,49 @@ func HandleKey(ctx context.Context, b *bot.Bot, update *models.Update) {
 	}
 
 	subKey := utils.GenerateSubscriptionKey(userUUID)
-	message := fmt.Sprintf("Ваш ключ: %s\nДата окончания: %s", subKey, subscription.EndDate.Format("2006-01-02"))
+	message := fmt.Sprintf(`🔑 Твой ключ: <code>%s</code>
+⏳ Дата окончания: %s
+📡 Трафик: %s`,
+		subKey, subscription.EndDate.Format("2006-01-02"), utils.TrafficFormat(subscription))
 
 	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{})
+
+	buttonBack := keyboards.ButtonBack()
+	keyboard := [][]models.InlineKeyboardButton{buttonBack}
 
 	editParams := &bot.EditMessageTextParams{
 		ChatID:      query.From.ID,
 		MessageID:   query.Message.Message.ID,
 		Text:        message,
+		ParseMode:   models.ParseModeHTML,
+		ReplyMarkup: &models.InlineKeyboardMarkup{InlineKeyboard: keyboard},
+	}
+
+	_, err = b.EditMessageText(ctx, editParams)
+	if err != nil {
+		log.Printf("Failed to edit message: %v", err)
+	}
+}
+
+func Back(ctx context.Context, b *bot.Bot, update *models.Update) {
+	query := update.CallbackQuery
+	if query == nil {
+		return
+	}
+
+	userName := query.From.FirstName
+	userID := query.From.ID
+	userUUID := utils.IntToUUID(userID)
+
+	editParams := &bot.EditMessageTextParams{
+		ChatID:      query.From.ID,
+		MessageID:   query.Message.Message.ID,
+		Text:        fmt.Sprintf("%s, %s", utils.Greeting(), userName),
 		ReplyMarkup: keyboards.StartKeyboard(userUUID),
 	}
-	b.EditMessageText(ctx, editParams)
+
+	_, err := b.EditMessageText(ctx, editParams)
+	if err != nil {
+		log.Printf("Failed to edit message: %v", err)
+	}
 }

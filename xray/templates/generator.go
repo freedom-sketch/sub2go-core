@@ -10,7 +10,7 @@ import (
 	"github.com/freedom-sketch/sub2go-core/infra/database/models"
 )
 
-//go:embed templates/*.tmpl
+//go:embed .tmpl/*.tmpl
 var templates embed.FS
 
 type InboundTemplateData struct {

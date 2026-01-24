@@ -30,7 +30,7 @@ func TestConfigInboundVlessRealityXHTTP(t *testing.T) {
 		Description: "none",
 	}
 
-	inbConfig, err := GenerateInbounConfig(&inbound)
+	inbConfig, err := GenerateInboundConfig(&inbound)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -63,7 +63,7 @@ func TestConfigInboundVlessRealityTCP(t *testing.T) {
 		Description: "none",
 	}
 
-	inbConfig, err := GenerateInbounConfig(&inbound)
+	inbConfig, err := GenerateInboundConfig(&inbound)
 	if err != nil {
 		t.Fatal(err)
 	}

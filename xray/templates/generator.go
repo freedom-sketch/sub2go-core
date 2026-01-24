@@ -47,7 +47,7 @@ func prepareInboundData(inbound *models.Inbound) (InboundTemplateData, error) {
 	}, nil
 }
 
-func GenerateInbounConfig(inbound *models.Inbound) ([]byte, error) {
+func GenerateInboundConfig(inbound *models.Inbound) ([]byte, error) {
 	prt, net := inbound.Protocol, inbound.Network
 	tmplPath := fmt.Sprintf("templates/inbound_%s_%s_reality.tmpl", prt, net)
 

@@ -39,7 +39,7 @@ func TestAddInbound(t *testing.T) {
 		IsActive:    true,
 	}
 
-	inboundConfig, err := templates.GenerateInbounConfig(&testInbound)
+	inboundConfig, err := templates.GenerateInboundConfig(&testInbound)
 	if err != nil {
 		t.Fatal(err)
 	}

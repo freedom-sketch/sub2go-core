@@ -33,7 +33,7 @@ func Key(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	subscription, err := database.GetSubscriptionByUserUUID(db, userUUID)
 	if err != nil {
-		log.Printf("Failed to get subscription: %v", err)
+		log.Panicf("Failed to get subscription: %v", err)
 		return
 	}
 
@@ -58,7 +58,7 @@ func Key(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	_, err = b.EditMessageText(ctx, editParams)
 	if err != nil {
-		log.Printf("Failed to edit message: %v", err)
+		log.Panicf("Failed to edit message: %v", err)
 	}
 }
 
@@ -81,6 +81,6 @@ func Back(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	_, err := b.EditMessageText(ctx, editParams)
 	if err != nil {
-		log.Printf("Failed to edit message: %v", err)
+		log.Panicf("Failed to edit message: %v", err)
 	}
 }

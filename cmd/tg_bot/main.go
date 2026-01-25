@@ -40,6 +40,7 @@ func main() {
 	b.RegisterHandler(bot.HandlerTypeMessageText, "/start", bot.MatchTypePrefix, hdls.StartHandler)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "key", bot.MatchTypeExact, hdls.Key)
 	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "back", bot.MatchTypeExact, hdls.Back)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "admin_panel", bot.MatchTypeExact, hdls.AdminPanel)
 
 	b.Start(ctx)
 }

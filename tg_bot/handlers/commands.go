@@ -17,7 +17,7 @@ func StartHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	_, err := b.SendMessage(ctx, &bot.SendMessageParams{
 		ChatID:      update.Message.Chat.ID,
-		Text:        fmt.Sprintf("%s, %s", utils.Greeting(), userName),
+		Text:        fmt.Sprintf("%s, %s!", utils.Greeting(), userName),
 		ReplyMarkup: keyboards.StartKeyboard(userUUID),
 	})
 

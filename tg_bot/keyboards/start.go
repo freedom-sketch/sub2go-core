@@ -12,19 +12,29 @@ import (
 func StartKeyboard(UserUUID uuid.UUID) *models.InlineKeyboardMarkup {
 	cfg, err := config.Load("config.json")
 	if err != nil {
-		log.Panicf("Failed to load config: %v", err)
+		log.Panicf("failed to load config: %v", err)
 	}
 
 	db, err := database.Connect(&cfg.DataBase)
 	if err != nil {
-		log.Panicf("Failed to connect to database: %v", err)
+		log.Panicf("failed to connect to database: %v", err)
 	}
 
 	var keyboard [][]models.InlineKeyboardButton
 
+	isAdmin, err := database.IsAdmin(db, UserUUID)
+	if err != nil {
+		log.Panicf("error checking for administrator rights")
+	}
+
+	if isAdmin {
+		keyboard = append(keyboard, []models.InlineKeyboardButton{
+			{Text: "💻 Панель администратора", CallbackData: "admin_panel"}})
+	}
+
 	activeSub, err := database.HasActiveSubscription(db, UserUUID)
 	if err != nil {
-		log.Panicf("Failed to check active subscription: %v", err)
+		log.Panicf("failed to check active subscription: %v", err)
 	}
 
 	if activeSub {

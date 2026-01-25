@@ -41,7 +41,7 @@ func Key(ctx context.Context, b *bot.Bot, update *models.Update) {
 	message := fmt.Sprintf(`🔑 Твой ключ: <code>%s</code>
 ⏳ Дата окончания: %s
 📡 Трафик: %s`,
-		subKey, subscription.EndDate.Format("2006-01-02"), utils.TrafficFormat(subscription))
+		subKey, subscription.EndDate.Format("2006.01.02"), utils.TrafficFormat(subscription))
 
 	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{})
 

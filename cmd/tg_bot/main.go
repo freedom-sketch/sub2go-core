@@ -8,7 +8,7 @@ import (
 
 	"github.com/freedom-sketch/sub2go-core/infra/config"
 	"github.com/freedom-sketch/sub2go-core/infra/logger"
-	hdls "github.com/freedom-sketch/sub2go-core/tg_bot/handlers"
+	"github.com/freedom-sketch/sub2go-core/tg_bot/handlers"
 	"github.com/go-telegram/bot"
 )
 
@@ -28,7 +28,7 @@ func main() {
 	defer cancel()
 
 	opts := []bot.Option{
-		bot.WithDefaultHandler(hdls.DefaultHandler),
+		bot.WithDefaultHandler(handlers.DefaultHandler),
 	}
 
 	b, err := bot.New(cfg.TelegramBot.Token, opts...)
@@ -37,10 +37,10 @@ func main() {
 		panic(err)
 	}
 
-	b.RegisterHandler(bot.HandlerTypeMessageText, "/start", bot.MatchTypePrefix, hdls.StartHandler)
-	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "key", bot.MatchTypeExact, hdls.Key)
-	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "back", bot.MatchTypeExact, hdls.Back)
-	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "admin_panel", bot.MatchTypeExact, hdls.AdminPanel)
+	b.RegisterHandler(bot.HandlerTypeMessageText, "/start", bot.MatchTypePrefix, handlers.StartHandler)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "key", bot.MatchTypeExact, handlers.Key)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "back", bot.MatchTypeExact, handlers.Back)
+	b.RegisterHandler(bot.HandlerTypeCallbackQueryData, "admin_panel", bot.MatchTypeExact, handlers.AdminPanel)
 
 	b.Start(ctx)
 }

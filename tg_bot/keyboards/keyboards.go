@@ -3,6 +3,8 @@ package keyboards
 import (
 	"log"
 
+	"math/rand/v2"
+
 	"github.com/freedom-sketch/sub2go-core/infra/config"
 	"github.com/freedom-sketch/sub2go-core/infra/database"
 	"github.com/go-telegram/bot/models"
@@ -48,7 +50,7 @@ func StartKeyboard(UserUUID uuid.UUID) *models.InlineKeyboardMarkup {
 	})
 
 	keyboard = append(keyboard, []models.InlineKeyboardButton{
-		{Text: "📍 Дополнительное", CallbackData: "additionally"},
+		{Text: "📍 Дополнительное", CallbackData: "additional"},
 	})
 
 	return &models.InlineKeyboardMarkup{InlineKeyboard: keyboard}
@@ -56,6 +58,18 @@ func StartKeyboard(UserUUID uuid.UUID) *models.InlineKeyboardMarkup {
 
 func ButtonBack() []models.InlineKeyboardButton {
 	return []models.InlineKeyboardButton{{Text: "⬅️ Назад", CallbackData: "back"}}
+}
+
+func ButtonTgProxy() []models.InlineKeyboardButton {
+	cfg, err := config.Load("config.json")
+	if err != nil {
+		log.Panicf("failed to load config: %v", err)
+	}
+
+	URLs := cfg.TelegramBot.TgProxyURLs
+	randomIndex := rand.IntN(len(URLs))
+
+	return []models.InlineKeyboardButton{{Text: "⚙️ Прокси для телеграма", URL: cfg.TelegramBot.TgProxyURLs[randomIndex]}}
 }
 
 func AdminPanelKeyboard() *models.InlineKeyboardMarkup {

@@ -39,21 +39,28 @@ func Key(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	subKey := utils.GenerateSubscriptionKey(userUUID)
 	message := fmt.Sprintf(`🔑 Твой ключ: <code>%s</code>
-⏳ Дата окончания: %s
+⏳ Действует до <b>%s</b>
 📡 Трафик: %s`,
 		subKey, subscription.EndDate.Format("2006.01.02"), utils.TrafficFormat(subscription))
 
 	b.AnswerCallbackQuery(ctx, &bot.AnswerCallbackQueryParams{})
 
-	button := [][]models.InlineKeyboardButton{keyboards.ButtonBack()}
-	keyboard := &models.InlineKeyboardMarkup{InlineKeyboard: button}
+	var keyboard [][]models.InlineKeyboardButton
+
+	buttonBack := keyboards.ButtonBack()
+	if len(cfg.TelegramBot.TgProxyURLs) > 0 {
+		tgProxyButton := keyboards.ButtonTgProxy()
+		keyboard = append(keyboard, tgProxyButton, buttonBack)
+	} else {
+		keyboard = append(keyboard, buttonBack)
+	}
 
 	editParams := &bot.EditMessageTextParams{
 		ChatID:      query.From.ID,
 		MessageID:   query.Message.Message.ID,
 		Text:        message,
 		ParseMode:   models.ParseModeHTML,
-		ReplyMarkup: keyboard,
+		ReplyMarkup: &models.InlineKeyboardMarkup{InlineKeyboard: keyboard},
 	}
 
 	_, err = b.EditMessageText(ctx, editParams)

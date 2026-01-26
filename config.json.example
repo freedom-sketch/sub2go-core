@@ -1,0 +1,42 @@
+// Example config
+{
+    "app": {
+        "host": "localhost", // domain (without https://)
+        "web-path": "sub",
+        "port": 12345,
+        // you can read more about the parameters below here -> https://www.happ.su/main/ru/dev-docs/app-management
+        "profile-update-interval": 48, // indicated in hours
+        "profile-title": "Example", // the subscription header that will be specified in the client
+        "support-url": "https://example.com/",
+        "profile-web-page-url": "https://example.com/",
+        "announce": "There is no announcements yet",
+        "announce-url": "https://example.com/"
+    },
+
+    "xray-api": {
+        "port": 8080
+    },
+
+    "logging": {
+        "level": "info",
+        "subscription-api": "sub-api.log",
+        "agents-api": "agents-api.log",
+        "database": "db.log",
+        "telegram-bot": "tg-bot.log"
+    },
+
+    "database": {
+        "user": "",
+        "password": "",
+        "host": "localhost",
+        "port": 5432,
+        "name": ""
+    },
+    
+    "telegram-bot": {
+        "token": "TOKEN",
+        "channel": "https://example.com/",
+        "support": "https://example.com/",
+        "tg-proxy-urls": ["https://t.me/socks?server=0.0.0.0&port=12345&user=example&pass=123"] // optional
+    }
+}

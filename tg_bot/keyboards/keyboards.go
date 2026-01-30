@@ -11,12 +11,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func StartKeyboard(UserUUID uuid.UUID) *models.InlineKeyboardMarkup {
-	cfg, err := config.Load("config.json")
-	if err != nil {
-		log.Panicf("failed to load config: %v", err)
-	}
-
+func StartKeyboard(UserUUID uuid.UUID, cfg *config.Config) *models.InlineKeyboardMarkup {
 	db, err := database.Connect(&cfg.DataBase)
 	if err != nil {
 		log.Panicf("failed to connect to database: %v", err)
@@ -60,12 +55,7 @@ func ButtonBack() []models.InlineKeyboardButton {
 	return []models.InlineKeyboardButton{{Text: "⬅️ Назад", CallbackData: "back"}}
 }
 
-func ButtonTgProxy() []models.InlineKeyboardButton {
-	cfg, err := config.Load("config.json")
-	if err != nil {
-		log.Panicf("failed to load config: %v", err)
-	}
-
+func ButtonTgProxy(cfg *config.Config) []models.InlineKeyboardButton {
 	URLs := cfg.TelegramBot.TgProxyURLs
 	randomIndex := rand.IntN(len(URLs))
 

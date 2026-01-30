@@ -49,7 +49,7 @@ func Key(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	buttonBack := keyboards.ButtonBack()
 	if len(cfg.TelegramBot.TgProxyURLs) > 0 {
-		tgProxyButton := keyboards.ButtonTgProxy()
+		tgProxyButton := keyboards.ButtonTgProxy(cfg)
 		keyboard = append(keyboard, tgProxyButton, buttonBack)
 	} else {
 		keyboard = append(keyboard, buttonBack)
@@ -75,11 +75,16 @@ func Back(ctx context.Context, b *bot.Bot, update *models.Update) {
 		return
 	}
 
+	cfg, err := config.Load("config.json")
+	if err != nil {
+		log.Panicf("failed to load config: %v", err)
+	}
+
 	userName := query.From.FirstName
 	userID := query.From.ID
 	userUUID := utils.IntToUUID(userID)
 
-	keyboard := keyboards.StartKeyboard(userUUID)
+	keyboard := keyboards.StartKeyboard(userUUID, cfg)
 
 	editParams := &bot.EditMessageTextParams{
 		ChatID:      query.From.ID,
@@ -88,7 +93,7 @@ func Back(ctx context.Context, b *bot.Bot, update *models.Update) {
 		ReplyMarkup: keyboard,
 	}
 
-	_, err := b.EditMessageText(ctx, editParams)
+	_, err = b.EditMessageText(ctx, editParams)
 	if err != nil {
 		log.Panicf("failed to edit message: %v", err)
 	}

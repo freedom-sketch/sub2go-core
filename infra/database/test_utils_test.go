@@ -9,10 +9,13 @@ import (
 )
 
 func setupTestDB(t *testing.T) *gorm.DB {
-	cfg, err := config.Load("../../config.json")
+	err := config.Load("config.json")
 	if err != nil {
-		t.Fatalf("Failed to load config: %v", err)
+		t.Fatal(err)
 	}
+
+	cfg := config.Get()
+
 	db, err := Connect(&cfg.DataBase)
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %v", err)

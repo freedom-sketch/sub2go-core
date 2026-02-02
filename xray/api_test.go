@@ -9,10 +9,12 @@ import (
 )
 
 func TestAddInbound(t *testing.T) {
-	cfg, err := config.Load("config.json")
+	err := config.Load("config.json")
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	cfg := config.Get()
 
 	client := XrayAPI{}
 	err = client.Init(cfg.XrayAPI.Port)

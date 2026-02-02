@@ -19,10 +19,7 @@ func Key(ctx context.Context, b *bot.Bot, update *models.Update) {
 		return
 	}
 
-	cfg, err := config.Load("config.json")
-	if err != nil {
-		log.Panicf("failed to load config: %v", err)
-	}
+	cfg := config.Get()
 
 	db, err := database.Connect(&cfg.DataBase)
 	if err != nil {
@@ -75,10 +72,7 @@ func Back(ctx context.Context, b *bot.Bot, update *models.Update) {
 		return
 	}
 
-	cfg, err := config.Load("config.json")
-	if err != nil {
-		log.Panicf("failed to load config: %v", err)
-	}
+	cfg := config.Get()
 
 	userName := query.From.FirstName
 	userID := query.From.ID
@@ -93,7 +87,7 @@ func Back(ctx context.Context, b *bot.Bot, update *models.Update) {
 		ReplyMarkup: keyboard,
 	}
 
-	_, err = b.EditMessageText(ctx, editParams)
+	_, err := b.EditMessageText(ctx, editParams)
 	if err != nil {
 		log.Panicf("failed to edit message: %v", err)
 	}

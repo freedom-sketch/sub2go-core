@@ -51,17 +51,21 @@ type Config struct {
 	TelegramBot TelegramBot `json:"telegram-bot"`
 }
 
-// Loads data from the configuration into a structure and returns a pointer to it
-func Load(path string) (*Config, error) {
+var cfg *Config
+
+func Load(path string) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	var cfg Config
 	if err := json.Unmarshal(data, &cfg); err != nil {
-		return nil, err
+		return err
 	}
 
-	return &cfg, nil
+	return nil
+}
+
+func Get() *Config {
+	return cfg
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	cfg, err := config.Load("config.json")
+	err := config.Load("config.json")
 	if err != nil {
 		log.Panicf("Failed to load config: %v", err)
 	}
@@ -30,6 +30,8 @@ func main() {
 	opts := []bot.Option{
 		bot.WithDefaultHandler(handlers.DefaultHandler),
 	}
+
+	cfg := config.Get()
 
 	b, err := bot.New(cfg.TelegramBot.Token, opts...)
 	if err != nil {

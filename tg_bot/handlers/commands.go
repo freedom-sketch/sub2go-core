@@ -13,15 +13,12 @@ import (
 )
 
 func StartHandler(ctx context.Context, b *bot.Bot, update *models.Update) {
-	cfg, err := config.Load("config.json")
-	if err != nil {
-		log.Panicf("failed to load config: %v", err)
-	}
-
 	userName := update.Message.From.FirstName
 	userUUID := utils.IntToUUID(update.Message.From.ID)
 
-	_, err = b.SendMessage(ctx, &bot.SendMessageParams{
+	cfg := config.Get()
+
+	_, err := b.SendMessage(ctx, &bot.SendMessageParams{
 		ChatID:      update.Message.Chat.ID,
 		Text:        fmt.Sprintf("%s, %s!", utils.Greeting(), userName),
 		ReplyMarkup: keyboards.StartKeyboard(userUUID, cfg),

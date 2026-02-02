@@ -7,7 +7,6 @@ import (
 	"os/signal"
 
 	"github.com/freedom-sketch/sub2go-core/infra/config"
-	"github.com/freedom-sketch/sub2go-core/infra/logger"
 	"github.com/freedom-sketch/sub2go-core/tg_bot/handlers"
 	"github.com/go-telegram/bot"
 )
@@ -17,12 +16,6 @@ func main() {
 	if err != nil {
 		log.Panicf("Failed to load config: %v", err)
 	}
-
-	logger, err := logger.NewLogger("logs/tg_bot.log", "info")
-	if err != nil {
-		log.Panicf("Failed to create logger: %v:", err)
-	}
-	defer logger.Close()
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
@@ -35,8 +28,7 @@ func main() {
 
 	b, err := bot.New(cfg.TelegramBot.Token, opts...)
 	if err != nil {
-		logger.Errorf("Error creating bot instance: %v", err)
-		panic(err)
+		log.Panicf("Error creating bot instance: %v", err)
 	}
 
 	b.RegisterHandler(bot.HandlerTypeMessageText, "/start", bot.MatchTypePrefix, handlers.StartHandler)

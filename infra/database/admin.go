@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Checking a user for administrator rights using their UUID
 func IsAdmin(db *gorm.DB, userUUID uuid.UUID) (bool, error) {
 	var count int64
 	err := db.Model(&models.Admin{}).

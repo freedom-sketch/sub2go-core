@@ -17,14 +17,6 @@
         "port": 8080
     },
 
-    "logging": {
-        "level": "info",
-        "subscription-api": "sub-api.log",
-        "agents-api": "agents-api.log",
-        "database": "db.log",
-        "telegram-bot": "tg-bot.log"
-    },
-
     "database": {
         "user": "",
         "password": "",

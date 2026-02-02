@@ -20,14 +20,6 @@ type XrayAPI struct {
 	Port int `json:"port"`
 }
 
-type Logging struct {
-	Level           string `json:"level"`
-	SubscriptionAPI string `json:"subscription-api"`
-	AgentsAPI       string `json:"agents-api"`
-	DataBase        string `json:"database"`
-	TelegramBot     string `json:"telegram-bot"`
-}
-
 type DataBase struct {
 	User     string `json:"user"`
 	Password string `json:"password"`
@@ -46,13 +38,13 @@ type TelegramBot struct {
 type Config struct {
 	App         App         `json:"app"`
 	XrayAPI     XrayAPI     `json:"xray-api"`
-	Logging     Logging     `json:"logging"`
 	DataBase    DataBase    `json:"database"`
 	TelegramBot TelegramBot `json:"telegram-bot"`
 }
 
 var cfg *Config
 
+// loads the config located at path into the cfg variable
 func Load(path string) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -66,6 +58,7 @@ func Load(path string) error {
 	return nil
 }
 
+// returns a pointer to the config
 func Get() *Config {
 	return cfg
 }

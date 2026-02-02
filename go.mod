@@ -5,7 +5,6 @@ go 1.25.5
 require (
 	github.com/go-telegram/bot v1.17.0
 	github.com/google/uuid v1.6.0
-	github.com/sirupsen/logrus v1.9.3
 	github.com/xtls/xray-core v1.260113.0
 	google.golang.org/grpc v1.78.0
 	gorm.io/driver/postgres v1.6.0
